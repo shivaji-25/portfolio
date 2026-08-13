@@ -23,8 +23,11 @@
   }
 
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     background: var(--theme-bg);
+    /* Performance optimizations */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   body {
@@ -33,6 +36,39 @@
     background: var(--theme-bg);
     color: var(--theme-text);
     font-family: "Manrope", ui-sans-serif, system-ui, sans-serif;
+    /* Performance optimizations */
+    will-change: auto;
+  }
+
+  /* Hardware acceleration for smooth animations */
+  * {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000;
+    perspective: 1000;
+    transform: translateZ(0);
+    will-change: auto;
+  }
+
+  /* Smooth scrolling reset for Lenis */
+  html.lenis {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto;
+  }
+
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  .lenis.lenis-scrolling iframe {
+    pointer-events: none;
   }
 
   ::selection {

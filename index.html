@@ -1,25 +1,67 @@
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/profile.jpg" />
+    <link rel="icon" type="image/jpeg" href="/profile.jpg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0F172A" />
-    <meta name="description" content="SHIVAJI C S - Java Backend Developer & Computer Science Student. Master SDE Portfolio." />
-    <meta property="og:title" content="SHIVAJI C S — Java Backend Developer" />
-    <meta property="og:description" content="Portfolio of Shivaji C S, a Java backend developer and CS engineering student." />
+    <meta name="theme-color" content="#F5F6FA" />
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="SHIVAJI C S - Java Backend Developer specializing in Spring Boot, MySQL, and REST APIs. Building reliable backend systems." />
+    <meta name="keywords" content="Java Developer, Backend Developer, Spring Boot, MySQL, REST API, Portfolio, Shivaji CS" />
+    <meta name="author" content="Shivaji C S" />
+    
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary" />
-    <title>SHIVAJI C S — Java Backend Developer</title>
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Shivaji C S","jobTitle":"Java Backend Developer","email":"shivajichandramohan97@gmail.com","url":"https://github.com/shivaji-25","sameAs":["https://github.com/shivaji-25","https://linkedin.com/in/shivaji-cs"]}</script>
+    <meta property="og:title" content="SHIVAJI C S — Java Backend Developer" />
+    <meta property="og:description" content="Portfolio of Shivaji C S, a Java backend developer and CS engineering student specializing in Spring Boot and MySQL." />
+    <meta property="og:image" content="/profile.jpg" />
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SHIVAJI C S — Java Backend Developer" />
+    <meta name="twitter:description" content="Portfolio of Shivaji C S, Java backend developer specializing in Spring Boot and MySQL." />
+    <meta name="twitter:image" content="/profile.jpg" />
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Shivaji C S",
+      "jobTitle": "Java Backend Developer",
+      "email": "shivajichandramohan97@gmail.com",
+      "url": "https://github.com/shivaji-25",
+      "sameAs": [
+        "https://github.com/shivaji-25",
+        "https://linkedin.com/in/shivaji-cs"
+      ],
+      "alumniOf": "Vellore Institute of Technology",
+      "knowsAbout": ["Java", "Spring Boot", "MySQL", "REST APIs", "Backend Development"]
+    }
+    </script>
+    
+    <title>SHIVAJI C S — Java Backend Developer Portfolio</title>
 
-    <!-- Google Fonts: Poppins & Inter -->
+    <!-- Preconnect to Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
+    
+    <!-- Preload critical assets -->
+    <link rel="preload" href="/profile.jpg" as="image" />
   </head>
-  <body class="bg-[#0F172A] text-[#F8FAFC] font-sans antialiased selection:bg-[#06B6D4] selection:text-[#0F172A] overflow-x-hidden">
+  <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    
+    <!-- Performance monitoring -->
+    <script>
+      // Measure and log performance
+      window.addEventListener('load', () => {
+        const perfData = performance.getEntriesByType('navigation')[0];
+        console.log('Page load time:', perfData.loadEventEnd - perfData.fetchStart, 'ms');
+      });
+    </script>
   </body>
 </html>

@@ -8,4 +8,28 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  build: {
+    // Optimize bundle
+    target: 'es2015',
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      }
+    },
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom'],
+          'animation-vendor': ['framer-motion', 'gsap'],
+          'three-vendor': ['three', 'postprocessing'],
+        }
+      }
+    },
+    chunkSizeWarningLimit: 1000
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'framer-motion', 'three']
+  }
 })

@@ -1,60 +1,12 @@
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
 import { FaArrowRight, FaCode, FaGraduationCap, FaLocationArrow } from 'react-icons/fa';
 import { leetcodeAnalytics, personalDetails } from '../data/portfolioData';
-import { fetchLeetCodeStats, fetchLeetCodeStatsAlternate, fetchLeetCodeStatsBackup } from '../utils/leetcodeStats';
 import Counter from './Counter';
 
 const reveal = { hidden: { opacity: 0, y: 8 }, visible: { opacity: 1, y: 0, transition: { duration: 0.1, ease: 'linear' } } };
 
 export default function About() {
-  const [stats, setStats] = useState(leetcodeAnalytics);
-  const [loading, setLoading] = useState(true);
-  
-  useEffect(() => {
-    async function loadStats() {
-      try {
-        // Extract username from LeetCode URL
-        const username = personalDetails.leetcode.split('/').filter(Boolean).pop();
-        
-        console.log('Fetching LeetCode stats for:', username);
-        
-        // Try all APIs in sequence
-        let data = await fetchLeetCodeStats(username);
-        
-        if (!data) {
-          console.log('Primary API failed, trying alternate...');
-          data = await fetchLeetCodeStatsAlternate(username);
-        }
-        
-        if (!data) {
-          console.log('Alternate API failed, trying backup...');
-          data = await fetchLeetCodeStatsBackup(username);
-        }
-        
-        // Update stats if data was fetched successfully
-        if (data && data.totalSolved > 0) {
-          console.log('LeetCode stats fetched:', data);
-          setStats({
-            ...leetcodeAnalytics,
-            totalSolved: data.totalSolved,
-            easy: data.easy,
-            medium: data.medium,
-            hard: data.hard,
-          });
-        } else {
-          console.log('Using fallback static data');
-        }
-      } catch (error) {
-        console.error('Failed to load LeetCode stats:', error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    
-    loadStats();
-  }, []);
-  
+  const stats = leetcodeAnalytics;
   const total = stats.totalSolved;
   return (
     <section id="about" className="relative px-6 py-24 sm:px-8 lg:py-32 bg-[#F5F6FA]">
@@ -67,7 +19,13 @@ export default function About() {
             <div className="mt-8 flex flex-col sm:flex-row gap-6 items-start">
               <div className="relative shrink-0 profile-photo-wrapper">
                 <div className="relative h-44 w-44 overflow-hidden rounded-xl">
-                  <img src="/profile.jpg" alt={personalDetails.name} className="h-full w-full object-cover object-top transition-transform duration-500 hover:scale-105" />
+                  <img 
+                    src="/profile.jpg" 
+                    alt={personalDetails.name} 
+                    loading="lazy"
+                    decoding="async"
+                    className="h-full w-full object-cover object-top transition-transform duration-500 hover:scale-105" 
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                   <div className="absolute bottom-2 left-2 right-2 rounded-lg border border-[#E2E8F0] bg-white/90 px-2.5 py-1 text-center backdrop-blur-md">
                     <p className="font-mono text-[9px] font-bold uppercase tracking-wider text-[#0A0A0A]">Shivaji C S</p>
@@ -88,7 +46,7 @@ export default function About() {
 
           <div className="relative overflow-hidden rounded-[1.5rem] border border-[#E2E8F0] bg-white p-5 shadow-lg sm:p-7">
             <div className="relative flex flex-wrap items-start justify-between gap-4 border-b border-[#E2E8F0] pb-6">
-              <div className="flex items-center gap-3"><span className="grid h-10 w-10 place-items-center rounded-xl bg-[#EEF1F6] text-[#0A66C2]"><FaCode /></span><div><p className="text-sm font-extrabold tracking-[-0.03em] text-[#0A0A0A]">Algorithmic thinking</p><p className="mt-1 font-mono text-[10px] uppercase tracking-[.12em] text-[#9CA3AF]">LeetCode analytics {loading && '(updating...)'}</p></div></div>
+              <div className="flex items-center gap-3"><span className="grid h-10 w-10 place-items-center rounded-xl bg-[#EEF1F6] text-[#0A66C2]"><FaCode /></span><div><p className="text-sm font-extrabold tracking-[-0.03em] text-[#0A0A0A]">Algorithmic thinking</p><p className="mt-1 font-mono text-[10px] uppercase tracking-[.12em] text-[#9CA3AF]">LeetCode analytics</p></div></div>
               <div className="rounded-xl border border-[#E2E8F0] bg-[#EEF1F6] px-3 py-2 text-right">
                 <div className="flex items-center justify-center">
                   <Counter

@@ -10,6 +10,7 @@ import gsap from "gsap";
 import { personalDetails } from "../data/portfolioData";
 import DotRing from "./DotRing";
 import FoldText from "./FoldText";
+import Hyperspeed from "./Hyperspeed";
 
 const heroStats = [
   { value: "123+", label: "problems solved" },
@@ -27,16 +28,16 @@ export default function Hero() {
   const hyperspeedOptions = useMemo(
     () => ({
       distortion: "turbulentDistortion",
-      length: 300,
-      roadWidth: 8,
-      islandWidth: 1,
+      length: 250,
+      roadWidth: 6,
+      islandWidth: 0.8,
       lanesPerRoad: 2,
       fov: 90,
       fovSpeedUp: 120,
       speedUp: 2,
       carLightsFade: 0.7,
-      totalSideLightSticks: 8,
-      lightPairsPerRoadWay: 15,
+      totalSideLightSticks: 6,
+      lightPairsPerRoadWay: 12,
       shoulderLinesWidthPercentage: 0.03,
       brokenLinesWidthPercentage: 0.06,
       brokenLinesLengthPercentage: 0.3,
@@ -50,14 +51,14 @@ export default function Hero() {
       carShiftX: [-0.5, 0.5],
       carFloorSeparation: [0, 3],
       colors: {
-        roadColor: 0xf5f6fa,
-        islandColor: 0xe5e7eb,
-        background: 0xf5f6fa,
-        shoulderLines: 0xd1d5db,
-        brokenLines: 0xd1d5db,
-        leftCars: [0x0a66c2, 0x6366f1, 0x8b5cf6],
-        rightCars: [0x10b981, 0x14b8a6, 0x06b6d4],
-        sticks: 0x9ca3af,
+        roadColor: 0xe0e7ff,        // Light blue-gray road
+        islandColor: 0xdbeafe,      // Even lighter blue island
+        background: 0xf0f9ff,       // Very light blue background
+        shoulderLines: 0xbfdbfe,    // Light blue lines
+        brokenLines: 0xbfdbfe,      // Light blue broken lines
+        leftCars: [0xff6b9d, 0xff1493, 0xff69b4],     // Bright pink/magenta
+        rightCars: [0x00d9ff, 0x00bfff, 0x1e90ff],    // Bright cyan/blue
+        sticks: 0x60a5fa,           // Medium blue sticks
       },
     }),
     [],
@@ -71,7 +72,10 @@ export default function Hero() {
       ([entry]) => {
         setIsHeroVisible(entry.isIntersecting);
       },
-      { threshold: 0.1 },
+      { 
+        threshold: 0.1,
+        rootMargin: '50px' // Start loading slightly before entering viewport
+      },
     );
 
     observer.observe(heroRef.current);
@@ -125,13 +129,13 @@ export default function Hero() {
       ref={heroRef}
       className="relative flex min-h-[760px] items-center overflow-hidden px-6 pb-20 pt-32 sm:px-8 lg:min-h-[800px] bg-[#F5F6FA]"
     >
-      {/* Lightweight dot-ring background (replaces Hyperspeed) */}
+      {/* Hyperspeed background animation */}
       {isHeroVisible && (
         <div
-          className="fixed inset-0 opacity-30 pointer-events-none will-change-transform"
-          style={{ height: "100vh", zIndex: 0 }}
+          className="absolute inset-0 opacity-40 pointer-events-none"
+          style={{ zIndex: 0 }}
         >
-          <DotRing size={520} />
+          <Hyperspeed effectOptions={hyperspeedOptions} />
         </div>
       )}
 

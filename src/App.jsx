@@ -1,18 +1,27 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect } from 'react';
+import { useEffect, lazy, Suspense } from 'react';
 import ScrollProgress from './components/ScrollProgress';
 import AmbientBackground from './components/AmbientBackground';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import About from './components/About';
-import Skills from './components/Skills';
-import Projects from './components/Projects';
-import Experience from './components/Experience';
-import Certifications from './components/Certifications';
-import Achievements from './components/Achievements';
-import Contact from './components/Contact';
-import QuickDock from './components/QuickDock';
-import Footer from './components/Footer';
+
+// Lazy load non-critical components for faster initial load
+const About = lazy(() => import('./components/About'));
+const Skills = lazy(() => import('./components/Skills'));
+const Projects = lazy(() => import('./components/Projects'));
+const Experience = lazy(() => import('./components/Experience'));
+const Certifications = lazy(() => import('./components/Certifications'));
+const Achievements = lazy(() => import('./components/Achievements'));
+const Contact = lazy(() => import('./components/Contact'));
+const QuickDock = lazy(() => import('./components/QuickDock'));
+const Footer = lazy(() => import('./components/Footer'));
+
+// Minimal loading indicator
+const Loader = () => (
+  <div className="flex items-center justify-center py-16">
+    <div className="h-6 w-6 animate-spin rounded-full border-2 border-[#E2E8F0] border-t-[#0A66C2]" />
+  </div>
+);
 
 export default function App() {
   useEffect(() => {
@@ -36,17 +45,35 @@ export default function App() {
           className="relative z-10"
         >
           <Hero />
-          <About />
-          <Skills />
-          <Projects />
-          <Experience />
-          <Certifications />
-          <Achievements />
-          <Contact />
+          <Suspense fallback={<Loader />}>
+            <About />
+          </Suspense>
+          <Suspense fallback={<Loader />}>
+            <Skills />
+          </Suspense>
+          <Suspense fallback={<Loader />}>
+            <Projects />
+          </Suspense>
+          <Suspense fallback={<Loader />}>
+            <Experience />
+          </Suspense>
+          <Suspense fallback={<Loader />}>
+            <Certifications />
+          </Suspense>
+          <Suspense fallback={<Loader />}>
+            <Achievements />
+          </Suspense>
+          <Suspense fallback={<Loader />}>
+            <Contact />
+          </Suspense>
         </motion.main>
       </AnimatePresence>
-      <QuickDock />
-      <Footer />
+      <Suspense fallback={null}>
+        <QuickDock />
+      </Suspense>
+      <Suspense fallback={null}>
+        <Footer />
+      </Suspense>
     </div>
   );
 }

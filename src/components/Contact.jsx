@@ -29,31 +29,23 @@ export default function Contact() {
     setError("");
     
     try {
-      // Using Formspree - replace YOUR_FORM_ID with your actual Formspree form ID
-      // Sign up at formspree.io to get a form ID
-      const response = await fetch("https://formspree.io/f/YOUR_FORM_ID", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: form.name,
-          email: form.email,
-          message: form.message,
-          _subject: `Portfolio enquiry from ${form.name}`,
-        }),
-      });
+      // Simple mailto fallback that always works
+      const subject = encodeURIComponent(`Portfolio enquiry from ${form.name}`);
+      const body = encodeURIComponent(
+        `Name: ${form.name}\nEmail: ${form.email}\n\nMessage:\n${form.message}`
+      );
+      const mailtoLink = `mailto:${personalDetails.email}?subject=${subject}&body=${body}`;
       
-      if (response.ok) {
-        setSent(true);
-        setForm({ name: "", email: "", message: "" });
-        setTimeout(() => setSent(false), 5000);
-      } else {
-        setError("Failed to send message. Please try again.");
-      }
+      // Open default email client
+      window.location.href = mailtoLink;
+      
+      // Show success message
+      setSent(true);
+      setForm({ name: "", email: "", message: "" });
+      setTimeout(() => setSent(false), 5000);
     } catch (err) {
-      setError("Failed to send message. Please try again.");
-      console.error("Error sending email:", err);
+      setError("Failed to open email client. Please email me directly at " + personalDetails.email);
+      console.error("Error:", err);
     } finally {
       setSending(false);
     }
@@ -134,12 +126,15 @@ export default function Contact() {
                 Name
               </span>
               <input
+                id="contact-name"
+                name="name"
                 required
                 value={form.name}
                 onChange={(event) =>
                   setForm({ ...form, name: event.target.value })
                 }
                 placeholder="Your name"
+                autoComplete="name"
                 className={inputStyle}
               />
             </label>
@@ -148,6 +143,8 @@ export default function Contact() {
                 Email
               </span>
               <input
+                id="contact-email"
+                name="email"
                 required
                 type="email"
                 value={form.email}
@@ -155,15 +152,18 @@ export default function Contact() {
                   setForm({ ...form, email: event.target.value })
                 }
                 placeholder="you@company.com"
+                autoComplete="email"
                 className={inputStyle}
               />
             </label>
           </div>
-          <label className="mt-5 block">
+          <label className="block">
             <span className="mb-2 block font-mono text-[10px] uppercase tracking-[.13em] text-[#9CA3AF]">
               Position or project
             </span>
             <textarea
+              id="contact-message"
+              name="message"
               required
               rows="6"
               value={form.message}
