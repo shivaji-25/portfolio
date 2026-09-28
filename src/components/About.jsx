@@ -1,139 +1,130 @@
 import { motion } from 'framer-motion';
-import { FaArrowRight, FaCode, FaGraduationCap, FaLocationArrow } from 'react-icons/fa';
-import { leetcodeAnalytics, personalDetails } from '../data/portfolioData';
-import Counter from './Counter';
-
-const reveal = { hidden: { opacity: 0, y: 8 }, visible: { opacity: 1, y: 0, transition: { duration: 0.1, ease: 'linear' } } };
+import { FaGraduationCap, FaMapMarkerAlt, FaCode, FaExternalLinkAlt } from 'react-icons/fa';
+import { personalDetails, leetcodeAnalytics } from '../data/portfolioData';
 
 export default function About() {
-  const stats = leetcodeAnalytics;
-  const total = stats.totalSolved;
-  return (
-    <section id="about" className="relative px-6 py-24 sm:px-8 lg:py-32 bg-[#F5F6FA]">
-      <div className="mx-auto max-w-7xl">
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={reveal} className="grid gap-12 lg:grid-cols-[.93fr_1.07fr] lg:gap-20">
-          <div>
-            <p className="font-mono text-[0.7rem] font-medium uppercase tracking-[0.15em] text-[#0A0A0A]">01 / About</p>
-            <h2 className="mt-4 max-w-md text-[clamp(2rem,5vw,3.35rem)] font-extrabold leading-[1] tracking-[-0.06em] text-[#0A0A0A]">Engineering with a calm, precise edge.</h2>
-            
-            <div className="mt-8 flex flex-col sm:flex-row gap-6 items-start">
-              <div className="relative shrink-0 profile-photo-wrapper">
-                <div className="relative h-44 w-44 overflow-hidden rounded-xl">
-                  <img 
-                    src="/profile.jpg" 
-                    alt={personalDetails.name} 
-                    loading="lazy"
-                    decoding="async"
-                    className="h-full w-full object-cover object-top transition-transform duration-500 hover:scale-105" 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                  <div className="absolute bottom-2 left-2 right-2 rounded-lg border border-[#E2E8F0] bg-white/90 px-2.5 py-1 text-center backdrop-blur-md">
-                    <p className="font-mono text-[9px] font-bold uppercase tracking-wider text-[#0A0A0A]">Shivaji C S</p>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <p className="text-base leading-8 text-[#475569]">{personalDetails.bioFull}</p>
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <div className="flex items-center gap-2 rounded-xl border border-[#E2E8F0] bg-white px-3 py-2 text-xs text-[#475569]"><FaGraduationCap className="text-[#0A66C2]" /> {personalDetails.college}</div>
-                  <div className="flex items-center gap-2 rounded-xl border border-[#E2E8F0] bg-white px-3 py-2 text-xs text-[#475569]"><FaLocationArrow className="text-[#0A66C2]" /> {personalDetails.location}</div>
-                </div>
-              </div>
-            </div>
+  const total = leetcodeAnalytics.totalSolved;
 
-            <a href={personalDetails.leetcode} target="_blank" rel="noreferrer" className="mt-8 inline-flex items-center gap-2 text-sm font-bold text-[#0A66C2] transition-colors hover:text-[#094c8a]">Follow the problem-solving journey <FaArrowRight className="text-xs" /></a>
+  return (
+    <section id="about" className="py-8 sm:py-10 px-4 sm:px-6 max-w-6xl mx-auto">
+      {/* Header */}
+      <div className="flex items-baseline justify-between mb-8 pb-4 border-b border-neutral-200/80">
+        <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-neutral-900">
+          Professional Profile
+        </h2>
+        <span className="text-sm sm:text-base font-semibold text-neutral-400">
+          Core Foundations
+        </span>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-6">
+        
+        {/* Left Bento Card: Bio & Academic Info (md:col-span-7) */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.25 }}
+          className="md:col-span-7 rounded-2xl sm:rounded-3xl bg-white border border-black/[0.06] p-6 sm:p-8 shadow-sm flex flex-col justify-between"
+        >
+          <div>
+            <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-neutral-900">
+              Committed to Architectural Discipline and Algorithmic Rigor.
+            </h3>
+            <p className="mt-4 text-sm sm:text-base text-neutral-600 leading-relaxed">
+              {personalDetails.bioFull}
+            </p>
+
+            <div className="mt-6 flex flex-wrap gap-2.5">
+              <span className="inline-flex items-center gap-2 rounded-xl bg-[#F6F6F8] border border-neutral-200/80 px-3.5 py-2 text-xs font-semibold text-neutral-800">
+                <FaGraduationCap className="text-neutral-500" />
+                <span>{personalDetails.college}</span>
+              </span>
+
+              <span className="inline-flex items-center gap-2 rounded-xl bg-[#F6F6F8] border border-neutral-200/80 px-3.5 py-2 text-xs font-semibold text-neutral-800">
+                <FaMapMarkerAlt className="text-neutral-500" />
+                <span>{personalDetails.location}</span>
+              </span>
+            </div>
           </div>
 
-          <div className="relative overflow-hidden rounded-[1.5rem] border border-[#E2E8F0] bg-white p-5 shadow-lg sm:p-7">
-            <div className="relative flex flex-wrap items-start justify-between gap-4 border-b border-[#E2E8F0] pb-6">
-              <div className="flex items-center gap-3"><span className="grid h-10 w-10 place-items-center rounded-xl bg-[#EEF1F6] text-[#0A66C2]"><FaCode /></span><div><p className="text-sm font-extrabold tracking-[-0.03em] text-[#0A0A0A]">Algorithmic thinking</p><p className="mt-1 font-mono text-[10px] uppercase tracking-[.12em] text-[#9CA3AF]">LeetCode analytics</p></div></div>
-              <div className="rounded-xl border border-[#E2E8F0] bg-[#EEF1F6] px-3 py-2 text-right">
-                <div className="flex items-center justify-center">
-                  <Counter
-                    value={total}
-                    places={[100, 10, 1]}
-                    fontSize={18}
-                    padding={2}
-                    gap={2}
-                    textColor="#0A66C2"
-                    fontWeight={800}
-                    borderRadius={0}
-                    horizontalPadding={0}
-                    gradientHeight={8}
-                    gradientFrom="transparent"
-                    gradientTo="transparent"
-                  />
-                  <span className="text-lg font-extrabold text-[#0A66C2]">+</span>
-                </div>
-                <p className="font-mono text-[9px] uppercase tracking-[.12em] text-[#9CA3AF]">solved</p>
-              </div>
-            </div>
-            <div className="relative mt-7 grid gap-7 sm:grid-cols-[150px_1fr] sm:items-center">
-              <div className="relative mx-auto grid h-36 w-36 place-items-center rounded-full" style={{ background: `conic-gradient(#22c55e 0deg ${leetcodeAnalytics.easy / total * 360}deg, #f59e0b ${leetcodeAnalytics.easy / total * 360}deg ${(leetcodeAnalytics.easy + leetcodeAnalytics.medium) / total * 360}deg, #ef4444 ${(leetcodeAnalytics.easy + leetcodeAnalytics.medium) / total * 360}deg 360deg)` }}>
-                <div className="grid h-28 w-28 place-items-center rounded-full bg-white">
-                  <div className="text-center">
-                    <div className="flex items-center justify-center">
-                      <Counter
-                        value={total}
-                        places={[100, 10, 1]}
-                        fontSize={24}
-                        padding={4}
-                        gap={3}
-                        textColor="#0A0A0A"
-                        fontWeight={800}
-                        borderRadius={0}
-                        horizontalPadding={0}
-                        gradientHeight={10}
-                        gradientFrom="transparent"
-                        gradientTo="transparent"
-                      />
-                    </div>
-                    <p className="font-mono text-[8px] uppercase tracking-[.15em] text-[#9CA3AF]">problems</p>
-                  </div>
-                </div>
-              </div>
-              <div className="space-y-3">
-                {[
-                  ['Easy', stats.easy, 'bg-[#22c55e]', '#22c55e'],
-                  ['Medium', stats.medium, 'bg-[#f59e0b]', '#f59e0b'],
-                  ['Hard', stats.hard, 'bg-[#ef4444]', '#ef4444']
-                ].map(([name, value, bgColor, textColor]) => (
-                  <div key={name} className="grid grid-cols-[54px_1fr_40px] items-center gap-3 text-xs">
-                    <span className="text-[#475569]">{name}</span>
-                    <span className="h-1.5 overflow-hidden rounded-full bg-[#E2E8F0]">
-                      <motion.span
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${Number(value) / total * 100}%` }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.15, ease: 'linear' }}
-                        className={`block h-full rounded-full ${bgColor}`}
-                      />
-                    </span>
-                    <div className="text-right">
-                      <Counter
-                        value={Number(value)}
-                        places={value >= 100 ? [100, 10, 1] : [10, 1]}
-                        fontSize={12}
-                        padding={1}
-                        gap={1}
-                        textColor={textColor}
-                        fontWeight={600}
-                        borderRadius={0}
-                        horizontalPadding={0}
-                        gradientHeight={6}
-                        gradientFrom="transparent"
-                        gradientTo="transparent"
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="relative mt-7 grid gap-2 border-t border-[#E2E8F0] pt-5 sm:grid-cols-2">
-              {leetcodeAnalytics.topTopics.slice(0, 4).map((topic) => <div key={topic.topic} className="flex items-center justify-between rounded-lg bg-[#EEF1F6] px-3 py-2.5 text-[11px]"><span className="text-[#475569]">{topic.topic.replace(' & ', ' / ')}</span><span className="font-mono text-[#0A66C2]">{topic.count}</span></div>)}
-            </div>
+          <div className="mt-8 pt-4 border-t border-neutral-100 flex flex-wrap items-center justify-between gap-1.5 text-xs font-semibold text-neutral-500">
+            <span>Primary Specialization</span>
+            <span className="text-neutral-900 font-bold">Java Backend & Distributed Systems</span>
           </div>
         </motion.div>
+
+        {/* Right Bento Card: LeetCode Analytics (md:col-span-5) */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.25, delay: 0.05 }}
+          className="md:col-span-5 rounded-2xl sm:rounded-3xl bg-white border border-black/[0.06] p-6 sm:p-8 shadow-sm flex flex-col justify-between"
+        >
+          <div>
+            <div className="flex items-center justify-between pb-4 border-b border-neutral-100">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <span className="w-8 h-8 rounded-lg bg-neutral-100 flex items-center justify-center text-neutral-800 shrink-0">
+                  <FaCode className="text-xs" />
+                </span>
+                <span className="text-xs font-bold uppercase tracking-wider text-neutral-500 font-mono truncate">
+                  Algorithmic Metrics
+                </span>
+              </div>
+              <span className="text-lg font-black text-neutral-900 font-mono">
+                {total}+
+              </span>
+            </div>
+
+            {/* Breakdown Bars */}
+            <div className="mt-5 space-y-3">
+              {[
+                { label: 'Easy', count: leetcodeAnalytics.easy, color: 'bg-emerald-500', total },
+                { label: 'Medium', count: leetcodeAnalytics.medium, color: 'bg-amber-500', total },
+                { label: 'Hard', count: leetcodeAnalytics.hard, color: 'bg-rose-500', total },
+              ].map((item) => (
+                <div key={item.label} className="text-xs">
+                  <div className="flex justify-between font-semibold mb-1 text-neutral-700">
+                    <span>{item.label}</span>
+                    <span className="font-mono text-neutral-500">{item.count}</span>
+                  </div>
+                  <div className="w-full h-2 rounded-full bg-neutral-100 overflow-hidden">
+                    <div
+                      className={`h-full rounded-full ${item.color}`}
+                      style={{ width: `${(item.count / total) * 100}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Top Topics */}
+            <div className="mt-6 flex flex-wrap gap-1.5">
+              {leetcodeAnalytics.topTopics.slice(0, 3).map((topic) => (
+                <span
+                  key={topic.topic}
+                  className="px-2.5 py-1 rounded-lg bg-[#F6F6F8] text-[11px] font-medium text-neutral-600 border border-neutral-200/60"
+                >
+                  {topic.topic.split('(')[0].trim()}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-6 pt-4 border-t border-neutral-100">
+            <a
+              href={personalDetails.leetcode}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-neutral-900 hover:text-black hover:underline"
+            >
+              <span>Inspect LeetCode Problem-Solving Profile</span>
+              <FaExternalLinkAlt className="text-[10px]" />
+            </a>
+          </div>
+        </motion.div>
+
       </div>
     </section>
   );

@@ -1,117 +1,217 @@
-import { LayoutGroup, motion } from 'framer-motion';
-import { useMemo, useState } from 'react';
-import { FaArrowRight, FaGithub } from 'react-icons/fa';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  FaArrowRight,
+  FaGithub,
+  FaRoute,
+  FaUserGraduate,
+  FaBox,
+  FaVoteYea,
+  FaCode,
+} from 'react-icons/fa';
 import { projects } from '../data/portfolioData';
 
+const projectThemes = {
+  'campus-nav': {
+    bg: 'bg-[#EDE9FE]',
+    text: 'text-[#6D28D9]',
+    border: 'border-[#DDD6FE]',
+    icon: FaRoute,
+  },
+  'student-mgmt': {
+    bg: 'bg-[#D1FAE5]',
+    text: 'text-[#047857]',
+    border: 'border-[#A7F3D0]',
+    icon: FaUserGraduate,
+  },
+  'package-tracking': {
+    bg: 'bg-[#FEF3C7]',
+    text: 'text-[#B45309]',
+    border: 'border-[#FDE68A]',
+    icon: FaBox,
+  },
+  'online-voting': {
+    bg: 'bg-[#E0F2FE]',
+    text: 'text-[#0369A1]',
+    border: 'border-[#BAE6FD]',
+    icon: FaVoteYea,
+  },
+};
+
+const getAssetUrl = (path) => {
+  if (!path) return '';
+  if (path.startsWith('http')) return path;
+  // Use relative path so it resolves seamlessly on GitHub Pages, Vercel, Netlify
+  const cleanPath = path.replace(/^\//, '');
+  return `./${cleanPath}`;
+};
+
 export default function Projects() {
-  const [filter, setFilter] = useState('All');
-  const filters = useMemo(() => ['All', ...new Set(projects.map((project) => project.category.split(' & ')[0]))], []);
-  const visibleProjects = filter === 'All' ? projects : projects.filter((project) => project.category.startsWith(filter));
-  
-  const filterColors = {
-    'All': { bg: 'bg-[#0A66C2]', text: 'text-white', hover: 'rgba(10,102,194,.15)', accent: 'border-[#0A66C2]' },
-    'Backend': { bg: 'bg-[#22c55e]', text: 'text-white', hover: 'rgba(34,197,94,.15)', accent: 'border-[#22c55e]' },
-    'Full-Stack': { bg: 'bg-[#f59e0b]', text: 'text-white', hover: 'rgba(245,158,11,.15)', accent: 'border-[#f59e0b]' },
-    'Frontend': { bg: 'bg-[#8b5cf6]', text: 'text-white', hover: 'rgba(139,92,246,.15)', accent: 'border-[#8b5cf6]' },
-    'AI': { bg: 'bg-[#ec4899]', text: 'text-white', hover: 'rgba(236,72,153,.15)', accent: 'border-[#ec4899]' },
+  const [expandedId, setExpandedId] = useState(null);
+
+  const toggleExpand = (id) => {
+    setExpandedId(expandedId === id ? null : id);
   };
-  
+
   return (
-    <section id="projects" className="relative px-6 py-24 sm:px-8 lg:py-32">
-      <div className="mx-auto max-w-7xl">
-        <motion.div initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.16 }} transition={{ duration: 0.1 }}>
-          <p className="section-kicker">03 / Selected work</p>
-          <div className="mt-4 flex flex-col gap-6 md:flex-row md:items-end md:justify-between"><h2 className="section-heading max-w-2xl">Things I’ve made work <span className="text-zinc-500">harder.</span></h2><p className="max-w-sm text-sm leading-6 text-zinc-500">A selection of systems where the real craft lives in the architecture underneath the interface.</p></div>
-          <LayoutGroup><div className="mt-9 flex flex-wrap gap-2">
-            {filters.map((item) => { const colors = filterColors[item] || filterColors['All']; return <button key={item} onClick={() => setFilter(item)} className={`relative rounded-full px-3.5 py-2 font-mono text-[10px] uppercase tracking-[.11em] transition-colors ${filter === item ? colors.text : 'border border-[#E2E8F0] bg-white text-[#9CA3AF] hover:text-[#475569]'}`}>{filter === item && <motion.span layoutId="project-filter" className={`absolute inset-0 -z-10 rounded-full ${colors.bg}`} transition={{ type: 'spring', stiffness: 350, damping: 28 }} />}{item}</button>; })}
-          </div><motion.div layout className="mt-6 grid gap-6 md:grid-cols-2">
-            {visibleProjects.map((project, index) => <ProjectCard key={project.id} project={project} index={index} filter={filter} filterColors={filterColors} />)}
-          </motion.div></LayoutGroup>
-        </motion.div>
+    <section id="projects" className="py-8 sm:py-10 px-4 sm:px-6 max-w-6xl mx-auto">
+      {/* Header */}
+      <div className="flex items-baseline justify-between mb-8 pb-4 border-b border-neutral-200/80">
+        <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-neutral-900">
+          Featured Engineering Projects
+        </h2>
+        <span className="text-sm sm:text-base font-mono font-semibold text-neutral-400">
+          2026
+        </span>
+      </div>
+
+      {/* Indexed Work List Rows */}
+      <div className="space-y-4">
+        {projects.map((project, index) => {
+          const isExpanded = expandedId === project.id;
+          const formattedIndex = index + 1 < 10 ? `0${index + 1}` : `${index + 1}`;
+          const theme = projectThemes[project.id] || {
+            bg: 'bg-[#F3F4F6]',
+            text: 'text-[#374151]',
+            border: 'border-[#E5E7EB]',
+            icon: FaCode,
+          };
+          const IconComponent = theme.icon;
+
+          return (
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.25, delay: index * 0.05 }}
+              className="rounded-2xl sm:rounded-3xl bg-white border border-black/[0.06] overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+            >
+              {/* Main Clickable Row */}
+              <div
+                onClick={() => toggleExpand(project.id)}
+                className="p-4 sm:p-6 flex items-center justify-between cursor-pointer group select-none"
+              >
+                {/* Left section: Number + Thumbnail + Title */}
+                <div className="flex items-center gap-3 sm:gap-6 min-w-0">
+                  {/* Number 01, 02... */}
+                  <span className="text-xs sm:text-base font-bold text-neutral-400 w-6 sm:w-8 shrink-0 font-mono">
+                    {formattedIndex}
+                  </span>
+
+                  {/* Thumbnail Container (with stylized fallback and image) */}
+                  <div
+                    className={`w-16 h-12 sm:w-24 sm:h-16 rounded-xl sm:rounded-2xl overflow-hidden shrink-0 shadow-sm relative flex items-center justify-center border ${theme.border} ${theme.bg}`}
+                  >
+                    {/* Stylized Pastel Bento Graphic Fallback */}
+                    <div className={`flex flex-col items-center justify-center ${theme.text}`}>
+                      <IconComponent className="text-xl sm:text-2xl" />
+                    </div>
+
+                    {/* Image Layer with Error Handling */}
+                    {project.image && (
+                      <img
+                        src={getAssetUrl(project.image)}
+                        alt={project.title}
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none';
+                        }}
+                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    )}
+                  </div>
+
+                  {/* Title */}
+                  <div className="min-w-0">
+                    <h3 className="text-base sm:text-xl font-bold tracking-tight text-neutral-900 group-hover:text-black truncate">
+                      {project.title}
+                    </h3>
+                    <p className="text-xs text-neutral-500 font-medium hidden sm:block truncate mt-0.5">
+                      {project.impact}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Right section: Category + Year + Action Button */}
+                <div className="flex items-center gap-4 sm:gap-8 shrink-0 pl-3">
+                  <div className="text-right hidden sm:block">
+                    <div className="text-xs sm:text-sm font-semibold text-neutral-800">
+                      {project.category}
+                    </div>
+                    <div className="text-xs text-neutral-400 font-mono mt-0.5">
+                      {project.year || '2026'}
+                    </div>
+                  </div>
+
+                  {/* Circular Action Arrow Button (turns black on hover) */}
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-neutral-200/90 bg-neutral-50 flex items-center justify-center text-neutral-800 group-hover:bg-neutral-900 group-hover:text-white group-hover:border-neutral-900 transition-all shadow-sm">
+                    <FaArrowRight
+                      className={`text-xs sm:text-sm transition-transform duration-200 ${
+                        isExpanded ? 'rotate-90' : '-rotate-45'
+                      }`}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Expandable Project Details Drawer */}
+              <AnimatePresence>
+                {isExpanded && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.25 }}
+                    className="border-t border-neutral-100 bg-[#FAFAFC] px-5 py-6 sm:px-8 sm:py-7"
+                  >
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+                      <div className="md:col-span-8">
+                        <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-400 mb-2 font-mono">
+                          Architectural Overview & Technical Specifications
+                        </h4>
+                        <p className="text-neutral-700 text-sm leading-relaxed font-normal">
+                          {project.architecture || project.impact}
+                        </p>
+
+                        <div className="mt-4 flex flex-wrap gap-1.5">
+                          {project.tech.map((t) => (
+                            <span
+                              key={t}
+                              className="px-2.5 py-1 rounded-lg bg-white border border-neutral-200 text-neutral-700 text-xs font-semibold"
+                            >
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="md:col-span-4 flex flex-col justify-end gap-2.5">
+                        <a
+                          href={project.github}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center justify-center gap-2 rounded-xl bg-neutral-900 hover:bg-black text-white px-4 py-2.5 text-xs font-bold transition-all shadow-sm"
+                        >
+                          <FaGithub className="text-sm" />
+                          <span>Source Code Repository</span>
+                        </a>
+
+                        <a
+                          href="#contact"
+                          className="inline-flex items-center justify-center gap-2 rounded-xl bg-white hover:bg-neutral-100 text-neutral-800 border border-neutral-200 px-4 py-2.5 text-xs font-bold transition-all shadow-sm"
+                        >
+                          <span>Inquire Regarding Project</span>
+                          <FaArrowRight className="text-[10px]" />
+                        </a>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          );
+        })}
       </div>
     </section>
   );
-}
-
-function ProjectCard({ project, index, filter, filterColors }) {
-  const [spotlight, setSpotlight] = useState({ x: 50, y: 50 });
-  const category = project.category.split(' & ')[0];
-  const activeColor = filter === 'All' ? filterColors['All'] : filterColors[filter] || filterColors['All'];
-  const projectColor = filterColors[category] || filterColors['All'];
-  
-  return <motion.article 
-    layout
-    initial={{ opacity: 0, scale: 0.9 }} 
-    animate={{ opacity: 1, scale: 1 }} 
-    exit={{ opacity: 0, scale: 0.9 }} 
-    transition={{ 
-      layout: { type: "spring", stiffness: 300, damping: 30 },
-      opacity: { duration: 0.2 },
-      scale: { duration: 0.2 }
-    }} 
-    whileHover={{ y: -8, scale: 1.02 }} 
-    onPointerMove={(event) => { const rect = event.currentTarget.getBoundingClientRect(); setSpotlight({ x: ((event.clientX - rect.left) / rect.width) * 100, y: ((event.clientY - rect.top) / rect.height) * 100 }); }} 
-    className="group relative overflow-hidden rounded-[1.5rem] border border-[#E2E8F0] bg-white shadow-lg hover:shadow-2xl transition-shadow"
-  >
-    <motion.div 
-      className="pointer-events-none absolute -inset-px z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100" 
-      style={{ background: `radial-gradient(280px circle at ${spotlight.x}% ${spotlight.y}%, ${activeColor.hover}, transparent 42%)` }} 
-    />
-    <div className="relative p-6 sm:p-7">
-      <div className="mb-7 flex items-center justify-between gap-4">
-        <motion.span 
-          className="rounded-lg border border-[#E2E8F0] bg-[#EEF1F6] px-2.5 py-1.5 font-mono text-[9px] uppercase tracking-[.13em] text-[#475569]"
-          whileHover={{ scale: 1.05 }}
-        >
-          0{index + 1} · {project.category}
-        </motion.span>
-        <motion.a 
-          href={project.github} 
-          target="_blank" 
-          rel="noreferrer" 
-          className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-[#E2E8F0] bg-[#EEF1F6] text-[#0A0A0A] transition-all hover:border-transparent ${projectColor.bg.replace('bg-', 'hover:bg-')} hover:text-white`} 
-          aria-label={`View ${project.title} source`}
-          whileHover={{ rotate: 360, scale: 1.1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <FaGithub className="text-base" />
-        </motion.a>
-      </div>
-      <motion.h3 
-        className="text-xl font-extrabold tracking-[-.05em] text-[#0A0A0A]"
-        whileHover={{ x: 5 }}
-        transition={{ type: "spring", stiffness: 300 }}
-      >
-        {project.title}
-      </motion.h3>
-      <p className="mt-3 max-w-xl text-sm leading-6 text-[#475569]">{project.impact}</p>
-      <motion.p 
-        className={`mt-5 border-l-2 ${projectColor.accent} pl-3 text-xs leading-6 text-[#9CA3AF]`}
-        initial={{ borderLeftWidth: 2 }}
-        whileHover={{ borderLeftWidth: 4, paddingLeft: 16 }}
-        transition={{ duration: 0.2 }}
-      >
-        {project.architecture}
-      </motion.p>
-      <div className="mt-6 flex flex-wrap gap-2">
-        {project.tech.slice(0, 4).map((tech, i) => (
-          <motion.span 
-            key={tech} 
-            className="rounded-md bg-[#EEF1F6] px-2 py-1 font-mono text-[9px] text-[#475569]"
-            whileHover={{ scale: 1.1 }}
-          >
-            {tech}
-          </motion.span>
-        ))}
-      </div>
-      <motion.a 
-        href={project.demo} 
-        className={`mt-7 inline-flex items-center gap-2 text-xs font-extrabold transition-colors ${projectColor.bg.replace('bg-', 'text-').replace(']', '/90]')} hover:opacity-80`}
-        whileHover={{ x: 5 }}
-        transition={{ type: "spring", stiffness: 400 }}
-      >
-        Read the build notes <motion.div whileHover={{ x: 3 }}><FaArrowRight className="text-[10px]" /></motion.div>
-      </motion.a>
-    </div>
-  </motion.article>;
 }

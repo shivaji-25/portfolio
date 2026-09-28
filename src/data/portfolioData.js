@@ -7,18 +7,19 @@ export const personalDetails = {
   github: "https://github.com/shivaji-25",
   linkedin: "https://linkedin.com/in/shivaji-cs",
   leetcode: "https://leetcode.com/u/shivajics/",
+  resume: "/resume.pdf",
   college: "Dr. N.G.P. Institute of Technology",
   year: "III Year B.E. Computer Science",
-  cgpa: "7.40",
+  cgpa: "7.45",
   bioShort:
-    "Third-year Computer Science student focused on backend development, Java, Spring Boot, MySQL, REST APIs, and DSA.",
+    "Computer Science undergraduate specializing in backend architecture, Java, Spring Boot, MySQL, and Data Structures & Algorithms.",
   bioFull:
-    "I am a third year student in Computer Science Engineering with a focus on backend development and software engineering. I mainly work with Java, Spring Boot, MySQL, REST APIs, and Data Structures & Algorithms. I love solving coding challenges, building full stack applications and learning modern technologies. I want to be a Software Development Engineer (SDE) and help build products that matter.",
+    "I am a Computer Science and Engineering undergraduate specializing in backend architecture, distributed systems, and algorithmic problem-solving. My core competencies center on Java, Spring Boot, relational database design with MySQL, and high-throughput RESTful API development. Through extensive problem-solving (127+ LeetCode DSA solutions) and industry internship experience, I focus on engineering dependable, fault-tolerant, and high-performance software systems.",
   roles: [
-    "Java Backend Developer",
-    "DSA & Algorithm Specialist",
-    "Spring Boot & MySQL Architect",
-    "AI Solution Explorer",
+    "Java Backend Engineer",
+    "Software Development Engineer (SDE)",
+    "Distributed Systems & Database Architect",
+    "Data Structures & Algorithms Specialist",
   ],
 };
 
@@ -75,7 +76,7 @@ public class BackendService {
   "developer": "SHIVAJI C S",
   "role": "Software Development Engineer (SDE)",
   "education": "B.E. Computer Science (Dr. NGP IT)",
-  "cgpa": 7.40,
+  "cgpa": 7.45,
   "skills": ["Java", "Spring Boot", "MySQL", "DSA", "REST APIs"],
   "status": "Open to Software Opportunities"
 }`,
@@ -110,7 +111,7 @@ export const navLinks = [
 export const quickFacts = [
   {
     label: "Academic Rank",
-    value: "CGPA 7.40",
+    value: "CGPA 7.45",
     desc: "Dr. N.G.P. IT • III Year",
     highlight: "#10B981",
   },
@@ -172,7 +173,7 @@ export const skillCategories = [
     skills: [
       { name: "Git & GitHub", level: "Version Control" },
       { name: "Postman", level: "API Testing" },
-      { name: "Data Structures & Algorithms", level: "123+ LeetCode" },
+      { name: "Data Structures & Algorithms", level: "127+ LeetCode" },
       { name: "OOP / DBMS / OS / Networks", level: "Core Foundation" },
     ],
   },
@@ -182,6 +183,7 @@ export const projects = [
   {
     id: "campus-nav",
     title: "Campus Navigation System",
+    year: "2026",
     impact:
       "Engineered pathfinding algorithms for real-time university route calculation & building lookup.",
     image: "/assets/campus_nav.jpg",
@@ -200,6 +202,7 @@ export const projects = [
   {
     id: "student-mgmt",
     title: "Student Management System",
+    year: "2026",
     impact:
       "Developed a responsive web platform for managing student records, enrollment, and academic details.",
     image: "/assets/student_mgmt.jpg",
@@ -218,6 +221,7 @@ export const projects = [
   {
     id: "package-tracking",
     title: "Package Delivery Tracking System",
+    year: "2026",
     impact:
       "Built real-time parcel tracking and logistics route optimization architecture.",
     image: "/assets/package_tracking.jpg",
@@ -236,6 +240,7 @@ export const projects = [
   {
     id: "online-voting",
     title: "Online Voting System",
+    year: "2026",
     impact:
       "Designed a secure digital election platform with Spring Boot backend and real-time H2 database persistence.",
     image: "/assets/online_voting.jpg",
@@ -317,7 +322,7 @@ export const education = {
   degree: "Bachelor of Engineering (Computer Science and Engineering)",
   institution: "Dr. N.G.P. Institute of Technology",
   year: "III Year (Current)",
-  cgpa: "7.40",
+  cgpa: "7.45",
   coursework: [
     "Data Structures & Algorithms",
     "Object-Oriented Programming (OOP)",

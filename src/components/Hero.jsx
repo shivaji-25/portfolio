@@ -1,273 +1,330 @@
-import { useEffect, useRef, useState, useMemo } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 import {
-  FaArrowDown,
   FaArrowRight,
-  FaGithub,
-  FaLinkedin,
-} from "react-icons/fa";
-import gsap from "gsap";
-import { personalDetails } from "../data/portfolioData";
-import DotRing from "./DotRing";
-import FoldText from "./FoldText";
-import Hyperspeed from "./Hyperspeed";
-
-const heroStats = [
-  { value: "123+", label: "problems solved" },
-  { value: "04", label: "shipped projects" },
-  { value: "7.40", label: "CGPA" },
-];
+  FaPlay,
+  FaJava,
+  FaServer,
+  FaCode,
+} from 'react-icons/fa';
+import { SiSpringboot, SiMysql, SiPostman } from 'react-icons/si';
+import { personalDetails } from '../data/portfolioData';
 
 export default function Hero() {
-  const heroRef = useRef(null);
-  const [roleIndex, setRoleIndex] = useState(0);
-  const [expandedStat, setExpandedStat] = useState(null);
-  const [isHeroVisible, setIsHeroVisible] = useState(true);
+  const [copied, setCopied] = useState(false);
 
-  // Optimized Hyperspeed config - high performance
-  const hyperspeedOptions = useMemo(
-    () => ({
-      distortion: "turbulentDistortion",
-      length: 250,
-      roadWidth: 6,
-      islandWidth: 0.8,
-      lanesPerRoad: 2,
-      fov: 90,
-      fovSpeedUp: 120,
-      speedUp: 2,
-      carLightsFade: 0.7,
-      totalSideLightSticks: 6,
-      lightPairsPerRoadWay: 12,
-      shoulderLinesWidthPercentage: 0.03,
-      brokenLinesWidthPercentage: 0.06,
-      brokenLinesLengthPercentage: 0.3,
-      lightStickWidth: [0.08, 0.2],
-      lightStickHeight: [1.0, 1.3],
-      movingAwaySpeed: [70, 90],
-      movingCloserSpeed: [-130, -170],
-      carLightsLength: [8, 40],
-      carLightsRadius: [0.03, 0.1],
-      carWidthPercentage: [0.2, 0.4],
-      carShiftX: [-0.5, 0.5],
-      carFloorSeparation: [0, 3],
-      colors: {
-        roadColor: 0xe0e7ff,        // Light blue-gray road
-        islandColor: 0xdbeafe,      // Even lighter blue island
-        background: 0xf0f9ff,       // Very light blue background
-        shoulderLines: 0xbfdbfe,    // Light blue lines
-        brokenLines: 0xbfdbfe,      // Light blue broken lines
-        leftCars: [0xff6b9d, 0xff1493, 0xff69b4],     // Bright pink/magenta
-        rightCars: [0x00d9ff, 0x00bfff, 0x1e90ff],    // Bright cyan/blue
-        sticks: 0x60a5fa,           // Medium blue sticks
-      },
-    }),
-    [],
-  );
-
-  // Intersection Observer to pause animation when hero is not visible
-  useEffect(() => {
-    if (!heroRef.current) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsHeroVisible(entry.isIntersecting);
-      },
-      { 
-        threshold: 0.1,
-        rootMargin: '50px' // Start loading slightly before entering viewport
-      },
-    );
-
-    observer.observe(heroRef.current);
-
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(
-      () => setRoleIndex((index) => (index + 1) % personalDetails.roles.length),
-      2600,
-    );
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
-  useEffect(() => {
-    const context = gsap.context(() => {
-      const timeline = gsap.timeline({ defaults: { ease: "power3.out" } });
-      timeline
-        .from('[data-hero="eyebrow"]', { opacity: 0, y: 16, duration: 0.3 })
-        // Title animation handled by FoldText component
-        .from(
-          '[data-hero="copy"]',
-          { opacity: 0, y: 16, duration: 0.32 },
-          "-=0.2",
-        )
-        .from(
-          '[data-hero="actions"]',
-          { opacity: 0, y: 14, duration: 0.3 },
-          "-=0.18",
-        )
-        .from(
-          '[data-hero="stats"] > *',
-          { opacity: 0, y: 12, stagger: 0.05, duration: 0.25 },
-          "-=0.15",
-        )
-        .from(
-          '[data-hero="console"]',
-          { opacity: 0, scale: 0.94, rotate: 2, duration: 0.4 },
-          "-=0.4",
-        );
-    }, heroRef);
-    return () => context.revert();
-  }, []);
+  const copyEmail = async () => {
+    await navigator.clipboard.writeText(personalDetails.email);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
-    <section
-      id="home"
-      ref={heroRef}
-      className="relative flex min-h-[760px] items-center overflow-hidden px-6 pb-20 pt-32 sm:px-8 lg:min-h-[800px] bg-[#F5F6FA]"
-    >
-      {/* Hyperspeed background animation */}
-      {isHeroVisible && (
-        <div
-          className="absolute inset-0 opacity-40 pointer-events-none"
-          style={{ zIndex: 0 }}
+    <section id="home" className="pt-24 sm:pt-28 pb-8 px-4 sm:px-6 max-w-6xl mx-auto">
+      {/* 1. Bento Hero Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-5 items-stretch">
+        
+        {/* Card 1: Left Tall Profile Card (md:col-span-4) */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="relative md:col-span-4 rounded-[2rem] bg-white border border-black/[0.06] overflow-hidden flex flex-col shadow-sm"
         >
-          <Hyperspeed effectOptions={hyperspeedOptions} />
-        </div>
-      )}
-
-      <div className="absolute left-1/2 top-40 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full hero-outer-ring" />
-      <div className="absolute left-1/2 top-40 h-[38rem] w-[38rem] -translate-x-1/2 rounded-full hero-outer-ring hero-outer-ring--soft" />
-      <div className="relative mx-auto grid w-full max-w-7xl items-center gap-16 lg:grid-cols-[1.08fr_.92fr] lg:gap-12">
-        <div className="max-w-3xl">
-          <div
-            data-hero="eyebrow"
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-white px-3 py-1.5 font-mono text-[10px] font-medium uppercase tracking-[0.15em] text-[#9CA3AF]"
-          >
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#0A66C2] opacity-12" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#0A66C2]" />
-            </span>
-            seeking software opportunities
-          </div>
-          <h1
-            data-hero="title"
-            className="max-w-4xl text-[clamp(3.3rem,8vw,7.2rem)] font-extrabold leading-[0.89] tracking-[-0.085em] text-[#0A0A0A]"
-          >
-            <FoldText
-              text={`I build\nsystems that move.`}
-              splitBy="word"
-              hinge="top"
-              trigger="mount"
-              duration={0.6}
-              stagger={0.05}
-              ease="power3.out"
-              perspective={800}
-              creaseShading={0.5}
-              fontSize="clamp(3.3rem, 8vw, 7.2rem)"
-              fontWeight={800}
-              color="#0A0A0A"
+          {/* Top Pattern Section */}
+          <div className="relative h-52 sm:h-64 bg-[#EBE6F8] p-6">
+            {/* Dot grid texture layer with top rounding */}
+            <div
+              className="absolute inset-0 opacity-40 overflow-hidden rounded-t-[2rem]"
+              style={{
+                backgroundImage: 'radial-gradient(#9d8cc9 1.5px, transparent 1.5px)',
+                backgroundSize: '16px 16px',
+              }}
             />
-          </h1>
-          <div data-hero="copy" className="mt-8 max-w-xl space-y-4">
-            <div className="flex items-center gap-3">
-              <p className="text-lg font-medium leading-relaxed text-ink-secondary sm:text-xl">
-                Hi, I'm{" "}
-                <span className="text-[#0A0A0A]">{personalDetails.name}</span> —
-                a Java backend developer
+            {/* Cutout circular avatar overlapping boundary exactly 50% */}
+            <div className="absolute bottom-0 translate-y-1/2 left-6 w-[110px] h-[110px] sm:w-[128px] sm:h-[128px] rounded-full border-4 border-white shadow-[0_4px_14px_rgba(0,0,0,0.12)] overflow-hidden bg-[#EDE9FE] z-10 flex items-center justify-center">
+              <span className="text-2xl font-black text-[#6D28D9]">SC</span>
+              <img
+                src="./profile.jpg"
+                alt={personalDetails.name}
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                }}
+                className="absolute inset-0 w-full h-full object-cover object-[center_20%]"
+              />
+            </div>
+          </div>
+
+          {/* Bottom Content Section */}
+          <div className="px-6 sm:px-8 pb-6 sm:pb-8 pt-[74px] sm:pt-[84px] flex-1 flex flex-col justify-between">
+            <div>
+              <h1 className="text-2xl sm:text-[1.85rem] font-extrabold tracking-tight text-neutral-900 leading-[1.15]">
+                Architecting Scalable Backend Systems & Robust APIs.
+              </h1>
+              <p className="mt-3 text-xs sm:text-sm text-neutral-500 font-medium leading-relaxed">
+                Java · Spring Boot · MySQL · RESTful APIs · Data Structures & Algorithms
               </p>
             </div>
-            <p className="text-base leading-relaxed text-[#475569]">
-              Delivering reliable backend systems with Java, Spring Boot, MySQL,
-              and REST APIs.
-            </p>
-            <div className="flex h-6 items-center font-mono text-sm text-[#9CA3AF]">
-              <span className="mr-2 text-[#9CA3AF]">//</span>
-              <span>seeking:</span>
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={roleIndex}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.25 }}
-                  className="ml-2 text-[#0A0A0A]"
-                >
-                  {personalDetails.roles[roleIndex]}
-                </motion.span>
-              </AnimatePresence>
+            <div className="mt-6 pt-4 border-t border-neutral-100 flex flex-wrap items-center justify-between gap-1.5 text-[11px] font-semibold tracking-wider uppercase text-neutral-400">
+              <span>Candidate Status</span>
+              <span className="inline-flex items-center gap-1.5 text-emerald-600 font-bold text-[10px] sm:text-[11px]">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                <span>Open for SDE Roles</span>
+              </span>
             </div>
           </div>
-          <div
-            data-hero="actions"
-            className="mt-9 flex flex-wrap items-center gap-3"
-          >
+        </motion.div>
+
+        {/* Card 2: Middle About Card (md:col-span-4) */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.05 }}
+          className="md:col-span-4 rounded-[2rem] bg-white border border-black/[0.06] p-6 sm:p-8 flex flex-col justify-between shadow-sm"
+        >
+          <div>
+            <span className="text-neutral-400 font-bold text-xs uppercase tracking-widest block mb-4 font-mono">
+              Executive Profile
+            </span>
+            <p className="text-neutral-800 text-sm sm:text-[15px] leading-relaxed font-normal">
+              I am a <strong className="text-neutral-900 font-semibold">Java Backend Engineer</strong> and Computer Science undergraduate specializing in scalable microservices, robust RESTful APIs, and algorithmic problem-solving.
+            </p>
+            <p className="mt-3 text-neutral-600 text-sm leading-relaxed">
+              Dedicated to architecting resilient, fault-tolerant backend infrastructures that ensure optimal system throughput, data integrity, and high operational reliability.
+            </p>
+          </div>
+
+          <div className="mt-8">
             <a
               href="#projects"
-              className="group inline-flex items-center gap-2 rounded-xl bg-[#0A0A0A] px-5 py-3.5 text-sm font-extrabold text-white transition-all hover:-translate-y-1 shadow-soft"
+              className="rounded-full bg-neutral-900 hover:bg-black text-white font-semibold text-xs sm:text-sm px-6 py-3.5 transition-all inline-flex items-center justify-between w-full group shadow-sm hover:scale-[1.01]"
             >
-              View selected projects{" "}
-              <FaArrowDown className="text-xs transition-transform group-hover:translate-y-0.5" />
-            </a>
-            <a
-              href="#contact"
-              className="inline-flex items-center gap-2 rounded-xl border border-[#E2E8F0] bg-white px-5 py-3.5 text-sm font-bold text-[#0A0A0A] transition-all hover:border-[#0A66C2] hover:shadow-soft"
-            >
-              Contact me for opportunities <FaArrowRight className="text-xs" />
+              <span>Explore Technical Projects</span>
+              <FaArrowRight className="text-xs transition-transform group-hover:translate-x-1" />
             </a>
           </div>
-          <div
-            data-hero="stats"
-            className="mt-12 grid max-w-xl grid-cols-3 divide-x divide-[#E2E8F0] border-y border-[#E2E8F0] py-5"
-          >
-            {heroStats.map((stat, index) => {
-              const colors = ["#0A66C2", "#22c55e", "#f59e0b"];
-              const isExpanded = expandedStat === index;
-              return (
-                <motion.div
-                  key={stat.label}
-                  className="px-3 first:pl-0 cursor-pointer relative"
-                  onClick={() => setExpandedStat(isExpanded ? null : index)}
-                  whileHover={{ scale: 1.05 }}
-                  animate={
-                    isExpanded
-                      ? { scale: 1.1, zIndex: 10 }
-                      : { scale: 1, zIndex: 1 }
-                  }
-                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                >
-                  <motion.div
-                    className="text-xl font-extrabold tracking-[-0.05em] sm:text-2xl transition-colors"
-                    animate={{ color: isExpanded ? colors[index] : "#0A0A0A" }}
-                  >
-                    {stat.value}
-                  </motion.div>
-                  <div className="mt-1 font-mono text-[9px] uppercase tracking-[0.1em] text-[#9CA3AF]">
-                    {stat.label}
-                  </div>
-                  {isExpanded && (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.8 }}
-                      className="absolute -top-2 -left-2 -right-2 -bottom-2 rounded-xl border-2 pointer-events-none"
+        </motion.div>
+
+        {/* Right Column: Stacked Cards (md:col-span-4) */}
+        <div className="md:col-span-4 flex flex-col gap-4 sm:gap-5 justify-between">
+          
+          {/* Top Row: Two Half Cards */}
+          <div className="grid grid-cols-2 gap-4">
+            
+            {/* Card 3: Orange-Red Accent Card */}
+            <motion.a
+              href={personalDetails.leetcode}
+              target="_blank"
+              rel="noreferrer"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.1 }}
+              className="rounded-[2rem] bg-[#FF5533] text-white p-5 flex flex-col justify-between shadow-sm hover:scale-[1.02] transition-transform cursor-pointer group"
+            >
+              <div className="flex items-center justify-end">
+                <span className="w-8 h-8 rounded-full bg-white text-[#FF5533] flex items-center justify-center font-bold text-xs shadow-sm transition-transform group-hover:scale-110">
+                  <FaPlay className="text-[10px] ml-0.5" />
+                </span>
+              </div>
+
+              <div className="my-2">
+                {/* Audio Equalizer wave bars */}
+                <div className="flex items-end gap-1 h-6">
+                  {[40, 85, 55, 95, 45, 75, 30, 90, 60, 80].map((height, i) => (
+                    <span
+                      key={i}
+                      className="w-1 bg-white/90 rounded-full animate-pulse"
                       style={{
-                        borderColor: colors[index],
-                        boxShadow: `0 0 20px ${colors[index]}40`,
+                        height: `${height}%`,
+                        animationDelay: `${i * 0.1}s`,
                       }}
                     />
-                  )}
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
+                  ))}
+                </div>
+              </div>
 
-        {/* Tech stack card removed as requested */}
+              <div>
+                <p className="font-extrabold text-sm sm:text-base tracking-tight leading-snug">
+                  127+ LeetCode Solved
+                </p>
+                <p className="text-[11px] text-white/80 mt-0.5 font-medium">
+                  Algorithmic Performance ↗
+                </p>
+              </div>
+            </motion.a>
+
+            {/* Card 4: Formal Resume Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.15 }}
+              className="rounded-[2rem] bg-white border border-black/[0.06] p-5 flex flex-col justify-between shadow-sm"
+            >
+              <div>
+                <span className="text-[10px] font-mono uppercase tracking-wider text-neutral-400 font-bold block mb-1">
+                  Documentation
+                </span>
+                <h2 className="text-lg sm:text-2xl font-extrabold tracking-tight text-neutral-900 leading-tight">
+                  Official Resume
+                </h2>
+              </div>
+
+              <a
+                href={personalDetails.resume || '/resume.pdf'}
+                download="Shivaji_CS_Resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-full bg-neutral-100 hover:bg-neutral-900 hover:text-white active:bg-neutral-950 active:text-white transition-all text-[11px] sm:text-xs font-bold py-2.5 px-2 sm:px-3 text-center text-neutral-800 border border-neutral-200/80 mt-3 block truncate"
+              >
+                Download Resume ↗
+              </a>
+            </motion.div>
+          </div>
+
+          {/* Card 5: Core Technical Stack & Engineering Competencies (High-Utility Card) */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.2 }}
+            className="rounded-[2rem] bg-white border border-black/[0.06] p-5 sm:p-6 shadow-sm flex flex-col justify-between flex-1"
+          >
+            {/* Header */}
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-neutral-400 font-bold">
+                  Technical Proficiencies
+                </span>
+                <span className="text-[10px] uppercase font-mono tracking-wider text-neutral-500 bg-neutral-100 border border-neutral-200/80 px-2.5 py-0.5 rounded-full font-semibold">
+                  HTTP 200 OK
+                </span>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-extrabold tracking-tight text-neutral-900">
+                Core Tech Stack
+              </h3>
+            </div>
+
+            {/* Tech Stack Grid */}
+            <div className="grid grid-cols-2 gap-2 sm:gap-2.5 my-3.5">
+              <div className="flex items-center gap-2.5 p-2 sm:p-2.5 rounded-xl bg-neutral-50/80 border border-neutral-200/60 hover:border-neutral-300 transition-colors">
+                <div className="w-8 h-8 rounded-lg bg-neutral-100 text-[#EA2D2E] flex items-center justify-center text-base shrink-0">
+                  <FaJava />
+                </div>
+                <div className="min-w-0">
+                  <div className="text-xs font-bold text-neutral-900 leading-tight truncate">Java 17</div>
+                  <div className="text-[10px] text-neutral-500 font-medium truncate">Core Backend</div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2.5 p-2 sm:p-2.5 rounded-xl bg-neutral-50/80 border border-neutral-200/60 hover:border-neutral-300 transition-colors">
+                <div className="w-8 h-8 rounded-lg bg-neutral-100 text-[#6DB33F] flex items-center justify-center text-base shrink-0">
+                  <SiSpringboot />
+                </div>
+                <div className="min-w-0">
+                  <div className="text-xs font-bold text-neutral-900 leading-tight truncate">Spring Boot</div>
+                  <div className="text-[10px] text-neutral-500 font-medium truncate">Microservices</div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2.5 p-2 sm:p-2.5 rounded-xl bg-neutral-50/80 border border-neutral-200/60 hover:border-neutral-300 transition-colors">
+                <div className="w-8 h-8 rounded-lg bg-neutral-100 text-[#00758F] flex items-center justify-center text-base shrink-0">
+                  <SiMysql />
+                </div>
+                <div className="min-w-0">
+                  <div className="text-xs font-bold text-neutral-900 leading-tight truncate">MySQL</div>
+                  <div className="text-[10px] text-neutral-500 font-medium truncate">RDBMS & Schema</div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2.5 p-2 sm:p-2.5 rounded-xl bg-neutral-50/80 border border-neutral-200/60 hover:border-neutral-300 transition-colors">
+                <div className="w-8 h-8 rounded-lg bg-neutral-100 text-[#8B5CF6] flex items-center justify-center text-base shrink-0">
+                  <FaServer />
+                </div>
+                <div className="min-w-0">
+                  <div className="text-xs font-bold text-neutral-900 leading-tight truncate">REST APIs</div>
+                  <div className="text-[10px] text-neutral-500 font-medium truncate">High Throughput</div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2.5 p-2 sm:p-2.5 rounded-xl bg-neutral-50/80 border border-neutral-200/60 hover:border-neutral-300 transition-colors">
+                <div className="w-8 h-8 rounded-lg bg-neutral-100 text-[#FFA116] flex items-center justify-center text-base shrink-0">
+                  <FaCode />
+                </div>
+                <div className="min-w-0">
+                  <div className="text-xs font-bold text-neutral-900 leading-tight truncate">DSA & Algo</div>
+                  <div className="text-[10px] text-neutral-500 font-medium truncate">127+ LeetCode</div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2.5 p-2 sm:p-2.5 rounded-xl bg-neutral-50/80 border border-neutral-200/60 hover:border-neutral-300 transition-colors">
+                <div className="w-8 h-8 rounded-lg bg-neutral-100 text-[#FF6C37] flex items-center justify-center text-base shrink-0">
+                  <SiPostman />
+                </div>
+                <div className="min-w-0">
+                  <div className="text-xs font-bold text-neutral-900 leading-tight truncate">Postman & Git</div>
+                  <div className="text-[10px] text-neutral-500 font-medium truncate">API QA & CI/CD</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Footer Action */}
+            <div className="pt-3 border-t border-neutral-100 flex items-center justify-between text-xs">
+              <span className="text-[11px] font-semibold text-neutral-500 font-mono">
+                Dr. NGP IT • CSE '26
+              </span>
+              <a
+                href="#skills"
+                className="font-bold text-neutral-900 hover:text-black inline-flex items-center gap-1 group py-1"
+              >
+                <span>All Competencies</span>
+                <FaArrowRight className="text-[10px] transition-transform group-hover:translate-x-1" />
+              </a>
+            </div>
+          </motion.div>
+        </div>
       </div>
+
+      {/* 2. Stats Strip (Matching Image 4) */}
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.3 }}
+        className="mt-6 sm:mt-8 rounded-[2rem] bg-white border border-black/[0.06] shadow-sm p-6 sm:p-8"
+      >
+        <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-neutral-200/80">
+          
+          {/* Stat 1 */}
+          <div className="pb-5 md:pb-0 px-2 md:px-8 first:pl-0">
+            <div className="text-4xl sm:text-5xl font-extrabold tracking-tight text-neutral-900">
+              127+
+            </div>
+            <div className="text-xs sm:text-sm font-medium text-neutral-500 mt-1">
+              Algorithmic Problems Solved (LeetCode)
+            </div>
+          </div>
+
+          {/* Stat 2 */}
+          <div className="py-5 md:py-0 px-2 md:px-8">
+            <div className="text-4xl sm:text-5xl font-extrabold tracking-tight text-neutral-900">
+              04+
+            </div>
+            <div className="text-xs sm:text-sm font-medium text-neutral-500 mt-1">
+              Production & Backend Projects Engineered
+            </div>
+          </div>
+
+          {/* Stat 3 */}
+          <div className="pt-5 md:pt-0 px-2 md:px-8">
+            <div className="text-4xl sm:text-5xl font-extrabold tracking-tight text-neutral-900">
+              7.45
+            </div>
+            <div className="text-xs sm:text-sm font-medium text-neutral-500 mt-1">
+              Cumulative Grade Point Average (CGPA)
+            </div>
+          </div>
+
+        </div>
+      </motion.div>
     </section>
   );
 }

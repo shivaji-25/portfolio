@@ -1,209 +1,142 @@
-import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 import {
-  FaArrowRight,
+  FaEnvelope,
   FaCheck,
   FaCopy,
-  FaEnvelope,
   FaGithub,
   FaLinkedin,
-} from "react-icons/fa";
-import { personalDetails } from "../data/portfolioData";
+  FaCode,
+  FaArrowUp,
+  FaGlobe,
+} from 'react-icons/fa';
+import { personalDetails } from '../data/portfolioData';
 
 export default function Contact() {
   const [copied, setCopied] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
-  const [sent, setSent] = useState(false);
-  const [sending, setSending] = useState(false);
-  const [error, setError] = useState("");
 
   const copyEmail = async () => {
-    await navigator.clipboard.writeText(personalDetails.email);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 2000);
-  };
-  
-  const sendMail = async (event) => {
-    event.preventDefault();
-    setSending(true);
-    setError("");
-    
     try {
-      // Simple mailto fallback that always works
-      const subject = encodeURIComponent(`Portfolio enquiry from ${form.name}`);
-      const body = encodeURIComponent(
-        `Name: ${form.name}\nEmail: ${form.email}\n\nMessage:\n${form.message}`
-      );
-      const mailtoLink = `mailto:${personalDetails.email}?subject=${subject}&body=${body}`;
-      
-      // Open default email client
-      window.location.href = mailtoLink;
-      
-      // Show success message
-      setSent(true);
-      setForm({ name: "", email: "", message: "" });
-      setTimeout(() => setSent(false), 5000);
-    } catch (err) {
-      setError("Failed to open email client. Please email me directly at " + personalDetails.email);
-      console.error("Error:", err);
-    } finally {
-      setSending(false);
+      await navigator.clipboard.writeText(personalDetails.email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch {
+      window.location.href = `mailto:${personalDetails.email}`;
     }
   };
-  
-  const inputStyle =
-    "w-full rounded-xl border border-[#E2E8F0] bg-white px-4 py-3.5 text-sm text-[#0A0A0A] outline-none transition placeholder:text-[#9CA3AF] focus:border-[#0A66C2] focus:bg-white focus:ring-2 focus:ring-[#0A66C2]/20";
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
-    <section
-      id="contact"
-      className="relative px-6 pb-28 pt-24 sm:px-8 lg:pb-36 lg:pt-32 bg-[#F5F6FA]"
-    >
+    <section id="contact" className="py-8 sm:py-12 pb-16 px-4 sm:px-6 max-w-6xl mx-auto">
+      {/* Dark Contact Card (Matching Image 3) */}
       <motion.div
-        initial={{ opacity: 0, y: 8 }}
+        initial={{ opacity: 0, y: 15 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.15 }}
-        transition={{ duration: 0.1 }}
-        className="relative mx-auto grid max-w-7xl overflow-hidden rounded-[2rem] lg:grid-cols-[.9fr_1.1fr] border border-[#E2E8F0] shadow-lg"
+        viewport={{ once: true }}
+        transition={{ duration: 0.3 }}
+        className="rounded-[2rem] sm:rounded-[2.5rem] bg-[#111111] text-white p-8 sm:p-14 shadow-2xl relative overflow-hidden"
       >
-        <div className="relative p-7 sm:p-10 bg-white">
-          <div className="relative">
-            <p className="section-kicker">06 / Contact</p>
-            <h2 className="mt-4 max-w-md text-4xl font-extrabold leading-[.95] tracking-[-.075em] text-[#0A0A0A] sm:text-5xl">
-              Let's discuss opportunities.
-            </h2>
-            <p className="mt-6 max-w-md text-sm leading-7 text-[#475569]">
-              I am seeking backend and full-stack roles where strong engineering
-              can contribute to meaningful products.
-            </p>
-            <div className="mt-10 space-y-3">
-              <a
-                href={`mailto:${personalDetails.email}`}
-                className="flex items-center gap-3 rounded-xl p-3 text-sm font-bold text-[#0A0A0A] transition-colors hover:text-[#0A66C2] bg-[#F5F6FA] border border-[#E2E8F0]"
-              >
-                <span className="grid h-9 w-9 place-items-center rounded-lg bg-[#0A66C2]/10 text-[#0A66C2]">
-                  <FaEnvelope />
-                </span>
-                <span className="truncate">{personalDetails.email}</span>
-              </a>
-              <button
-                onClick={copyEmail}
-                className="flex items-center gap-2 px-1 text-xs font-bold text-[#475569] transition-colors hover:text-[#0A0A0A]"
-              >
-                {copied ? <FaCheck className="text-[#0A66C2]" /> : <FaCopy />}{" "}
-                {copied ? "Email copied to clipboard" : "Copy email address"}
-              </button>
-            </div>
-            <div className="mt-10 flex gap-3">
-              <a
-                href={personalDetails.github}
-                target="_blank"
-                rel="noreferrer"
-                className="grid h-10 w-10 place-items-center rounded-xl border border-[#E2E8F0] bg-[#F5F6FA] text-[#0A0A0A] transition-all hover:border-[#0A66C2] hover:bg-[#0A66C2]/10 hover:text-[#0A66C2] shadow-sm"
-                aria-label="GitHub"
-              >
-                <FaGithub className="text-lg" />
-              </a>
-              <a
-                href={personalDetails.linkedin}
-                target="_blank"
-                rel="noreferrer"
-                className="grid h-10 w-10 place-items-center rounded-xl border border-[#0A66C2]/30 bg-[#0A66C2]/10 text-[#0A66C2] shadow-sm transition-all hover:bg-[#0A66C2] hover:text-white"
-                aria-label="LinkedIn"
-              >
-                <FaLinkedin className="text-lg" />
-              </a>
-            </div>
+        {/* Subtle radial sheen in corner */}
+        <div className="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-white/[0.03] pointer-events-none blur-2xl" />
+
+        {/* Muted Section Label */}
+        <span className="text-neutral-400 font-bold text-xs uppercase tracking-[0.2em] block mb-6 font-mono">
+          PROFESSIONAL INQUIRIES & COLLABORATION
+        </span>
+
+        {/* Large Headline */}
+        <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white max-w-2xl leading-[1.15] mb-10">
+          Open to Software Engineering Roles & Technical Collaborations.
+        </h2>
+
+        {/* Action Row: Email Pill + Social Circles */}
+        <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-16">
+          
+          {/* Email Pill Button */}
+          <button
+            onClick={copyEmail}
+            className="rounded-full bg-white text-neutral-900 hover:bg-neutral-100 px-5 sm:px-6 py-3 sm:py-3.5 text-xs sm:text-sm font-bold tracking-wide transition-all inline-flex items-center gap-2.5 shadow-md active:scale-95 group cursor-pointer max-w-full"
+          >
+            <FaEnvelope className="text-neutral-700 text-xs sm:text-sm shrink-0" />
+            <span className="truncate">{personalDetails.email}</span>
+            {copied ? (
+              <span className="ml-1 text-xs text-emerald-600 font-bold inline-flex items-center gap-1 bg-emerald-50 px-2 py-0.5 rounded-full shrink-0">
+                <FaCheck className="text-[10px]" /> Copied!
+              </span>
+            ) : (
+              <span className="text-neutral-400 text-xs font-normal group-hover:text-neutral-600 transition-colors hidden sm:inline shrink-0">
+                (Click to copy)
+              </span>
+            )}
+          </button>
+
+          {/* Social Icon Circles */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* LeetCode */}
+            <a
+              href={personalDetails.leetcode}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="LeetCode Profile"
+              className="w-11 h-11 rounded-full border border-neutral-800 bg-neutral-900/60 flex items-center justify-center text-neutral-300 hover:text-white hover:border-white hover:bg-neutral-800 transition-all shadow-sm hover:scale-105"
+            >
+              <FaCode className="text-sm" />
+            </a>
+
+            {/* LinkedIn */}
+            <a
+              href={personalDetails.linkedin}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="LinkedIn Profile"
+              className="w-11 h-11 rounded-full border border-neutral-800 bg-neutral-900/60 flex items-center justify-center text-neutral-300 hover:text-white hover:border-white hover:bg-neutral-800 transition-all shadow-sm hover:scale-105"
+            >
+              <FaLinkedin className="text-sm" />
+            </a>
+
+            {/* GitHub */}
+            <a
+              href={personalDetails.github}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="GitHub Profile"
+              className="w-11 h-11 rounded-full border border-neutral-800 bg-neutral-900/60 flex items-center justify-center text-neutral-300 hover:text-white hover:border-white hover:bg-neutral-800 transition-all shadow-sm hover:scale-105"
+            >
+              <FaGithub className="text-sm" />
+            </a>
+
+            {/* Direct Mail */}
+            <a
+              href={`mailto:${personalDetails.email}`}
+              aria-label="Send direct email"
+              className="w-11 h-11 rounded-full border border-neutral-800 bg-neutral-900/60 flex items-center justify-center text-neutral-300 hover:text-white hover:border-white hover:bg-neutral-800 transition-all shadow-sm hover:scale-105"
+            >
+              <FaGlobe className="text-sm" />
+            </a>
           </div>
         </div>
-        <form
-          onSubmit={sendMail}
-          className="border-t border-[#E2E8F0] bg-[#EEF1F6] p-7 sm:p-10 lg:border-l lg:border-t-0"
-        >
-          <div className="grid gap-5 sm:grid-cols-2">
-            <label className="block">
-              <span className="mb-2 block font-mono text-[10px] uppercase tracking-[.13em] text-[#9CA3AF]">
-                Name
-              </span>
-              <input
-                id="contact-name"
-                name="name"
-                required
-                value={form.name}
-                onChange={(event) =>
-                  setForm({ ...form, name: event.target.value })
-                }
-                placeholder="Your name"
-                autoComplete="name"
-                className={inputStyle}
-              />
-            </label>
-            <label className="block">
-              <span className="mb-2 block font-mono text-[10px] uppercase tracking-[.13em] text-[#9CA3AF]">
-                Email
-              </span>
-              <input
-                id="contact-email"
-                name="email"
-                required
-                type="email"
-                value={form.email}
-                onChange={(event) =>
-                  setForm({ ...form, email: event.target.value })
-                }
-                placeholder="you@company.com"
-                autoComplete="email"
-                className={inputStyle}
-              />
-            </label>
+
+        {/* Bottom Footer Row */}
+        <div className="pt-8 border-t border-neutral-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-medium text-neutral-400">
+          <div>
+            © 2026 {personalDetails.name}. All rights reserved.
           </div>
-          <label className="block">
-            <span className="mb-2 block font-mono text-[10px] uppercase tracking-[.13em] text-[#9CA3AF]">
-              Position or project
-            </span>
-            <textarea
-              id="contact-message"
-              name="message"
-              required
-              rows="6"
-              value={form.message}
-              onChange={(event) =>
-                setForm({ ...form, message: event.target.value })
-              }
-              placeholder="Describe the role, project, or team needs..."
-              className={`${inputStyle} resize-none`}
-            />
-          </label>
-          <button 
-            type="submit" 
-            disabled={sending}
-            className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#0A66C2] px-5 py-4 text-sm font-extrabold text-white transition-all hover:-translate-y-0.5 hover:shadow-[0_14px_34px_rgba(10,102,194,.24)] disabled:opacity-50 disabled:cursor-not-allowed"
+
+          <div className="text-neutral-500">
+            Coimbatore, Tamil Nadu, India
+          </div>
+
+          <button
+            onClick={scrollToTop}
+            className="inline-flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer"
           >
-            {sending ? "Sending..." : "Send inquiry"} <FaArrowRight className="text-xs" />
+            <span>Back to top</span>
+            <FaArrowUp className="text-[10px]" />
           </button>
-          <AnimatePresence>
-            {sent && (
-              <motion.p
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                className="mt-3 flex items-center gap-2 text-xs text-[#22c55e] font-semibold"
-              >
-                <FaCheck /> Message sent successfully! I'll get back to you soon.
-              </motion.p>
-            )}
-            {error && (
-              <motion.p
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                className="mt-3 flex items-center gap-2 text-xs text-[#ef4444] font-semibold"
-              >
-                {error}
-              </motion.p>
-            )}
-          </AnimatePresence>
-        </form>
+        </div>
       </motion.div>
     </section>
   );
