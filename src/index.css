@@ -25,6 +25,8 @@
   html {
     scroll-behavior: smooth;
     overflow-x: hidden;
+    max-width: 100vw;
+    width: 100%;
     background: var(--theme-bg);
     /* Performance optimizations */
     -webkit-font-smoothing: antialiased;
@@ -33,12 +35,20 @@
 
   @media (prefers-reduced-motion: reduce) {
     html {
-      scroll-behavior: auto;
+      scroll-behavior: auto !important;
+    }
+    *, *::before, *::after {
+      scroll-behavior: auto !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
     }
   }
 
   body {
     min-width: 320px;
+    width: 100%;
+    max-width: 100vw;
     overflow-x: hidden;
     background: var(--theme-bg);
     color: var(--theme-text);
@@ -124,36 +134,55 @@ body::before {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.9'/%3E%3C/svg%3E");
 }
 
+/* Slim custom scrollbar with transparent track and accent color */
 * {
-  scrollbar-color: #ffffff #000000;
+  scrollbar-color: #171717 transparent;
   scrollbar-width: thin;
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 7px;
+  height: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #000000;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #ffffff;
+  background: #171717;
   border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #ffffff;
+  background: #000000;
 }
 
 [data-theme="light"] * {
-  scrollbar-color: #000000 #ffffff;
+  scrollbar-color: #171717 transparent;
 }
 [data-theme="light"] ::-webkit-scrollbar-track {
-  background: #ffffff;
+  background: transparent;
 }
 [data-theme="light"] ::-webkit-scrollbar-thumb {
-  background: #000000;
+  background: #171717;
 }
 [data-theme="light"] ::-webkit-scrollbar-thumb:hover {
   background: #000000;
+}
+
+/* Offset sticky navbar so section headings are never obscured */
+section[id] {
+  scroll-margin-top: 5.5rem;
+}
+
+/* Fluid responsive media & container containment */
+img, svg, video, canvas, audio, iframe, embed, object {
+  max-width: 100%;
+}
+
+/* Smooth inertia touch scrolling with boundary containment for modals & menus */
+.touch-scroll {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: none;
+  overscroll-behavior: contain;
 }
 
 .glass-card {

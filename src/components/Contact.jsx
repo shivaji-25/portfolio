@@ -33,11 +33,11 @@ export default function Contact() {
     <section id="contact" className="py-8 sm:py-12 pb-16 px-4 sm:px-6 max-w-6xl mx-auto">
       {/* Dark Contact Card (Matching Image 3) */}
       <motion.div
-        initial={{ opacity: 0, y: 15 }}
+        initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.3 }}
-        className="rounded-[2rem] sm:rounded-[2.5rem] bg-[#111111] text-white p-8 sm:p-14 shadow-2xl relative overflow-hidden"
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: 0.55, ease: 'easeOut' }}
+        className="rounded-[2rem] sm:rounded-[2.5rem] bg-[#111111] text-white p-6 sm:p-14 shadow-2xl relative overflow-hidden"
       >
         {/* Subtle radial sheen in corner */}
         <div className="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-white/[0.03] pointer-events-none blur-2xl" />
@@ -58,10 +58,10 @@ export default function Contact() {
           {/* Email Pill Button */}
           <button
             onClick={copyEmail}
-            className="rounded-full bg-white text-neutral-900 hover:bg-neutral-100 px-5 sm:px-6 py-3 sm:py-3.5 text-xs sm:text-sm font-bold tracking-wide transition-all inline-flex items-center gap-2.5 shadow-md active:scale-95 group cursor-pointer max-w-full"
+            className="rounded-full bg-white text-neutral-900 hover:bg-neutral-100 px-5 sm:px-6 py-3 min-h-[44px] text-xs sm:text-sm font-bold tracking-wide transition-all inline-flex items-center gap-2.5 shadow-md active:scale-95 group cursor-pointer max-w-full overflow-hidden"
           >
             <FaEnvelope className="text-neutral-700 text-xs sm:text-sm shrink-0" />
-            <span className="truncate">{personalDetails.email}</span>
+            <span className="truncate min-w-0">{personalDetails.email}</span>
             {copied ? (
               <span className="ml-1 text-xs text-emerald-600 font-bold inline-flex items-center gap-1 bg-emerald-50 px-2 py-0.5 rounded-full shrink-0">
                 <FaCheck className="text-[10px]" /> Copied!

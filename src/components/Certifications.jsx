@@ -22,10 +22,10 @@ export default function Certifications() {
         {certifications.map((cert, idx) => (
           <motion.div
             key={cert.title}
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.25, delay: idx * 0.1 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ duration: 0.55, ease: 'easeOut', delay: idx * 0.08 }}
             className="rounded-2xl sm:rounded-3xl bg-white border border-black/[0.06] p-6 sm:p-8 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between"
           >
             <div>
@@ -58,7 +58,7 @@ export default function Certifications() {
             <div className="mt-6 pt-4 border-t border-neutral-100">
               <button
                 onClick={() => setSelectedImage(cert.image)}
-                className="inline-flex items-center gap-2 rounded-xl bg-[#F6F6F8] hover:bg-neutral-900 hover:text-white px-4 py-2.5 text-xs font-bold text-neutral-800 transition-colors border border-neutral-200/80 cursor-pointer"
+                className="inline-flex items-center gap-2 rounded-xl bg-[#F6F6F8] hover:bg-neutral-900 hover:text-white px-4 py-2.5 min-h-[44px] text-xs font-bold text-neutral-800 transition-colors border border-neutral-200/80 cursor-pointer"
               >
                 <span>Inspect Verified Credential</span>
                 <FaExternalLinkAlt className="text-[10px]" />
@@ -68,26 +68,26 @@ export default function Certifications() {
         ))}
       </div>
 
-      {/* Certificate Modal */}
+      {/* Certificate Modal with inertia touch scrolling and 44px touch targets */}
       <AnimatePresence>
         {selectedImage && (
           <div
             onClick={() => setSelectedImage(null)}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+            className="touch-scroll fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm overscroll-contain overflow-y-auto"
           >
             <motion.div
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative max-w-3xl w-full bg-white rounded-3xl p-4 shadow-2xl border border-black/10 overflow-hidden"
+              className="relative max-w-3xl w-full bg-white rounded-3xl p-4 sm:p-6 shadow-2xl border border-black/10 overflow-hidden"
             >
               <button
                 onClick={() => setSelectedImage(null)}
                 aria-label="Close Modal"
-                className="absolute top-6 right-6 w-9 h-9 rounded-full bg-neutral-900 text-white flex items-center justify-center shadow-md hover:bg-black transition-colors z-10"
+                className="absolute top-4 right-4 sm:top-6 sm:right-6 w-11 h-11 min-h-[44px] min-w-[44px] rounded-full bg-neutral-900 text-white flex items-center justify-center shadow-md hover:bg-black active:scale-95 transition-all z-10 cursor-pointer"
               >
-                <FaTimes />
+                <FaTimes className="text-sm" />
               </button>
               <div className="rounded-2xl overflow-hidden border border-neutral-100 mt-2">
                 <img

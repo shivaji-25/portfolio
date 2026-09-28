@@ -20,15 +20,15 @@ export default function Hero() {
   };
 
   return (
-    <section id="home" className="pt-24 sm:pt-28 pb-8 px-4 sm:px-6 max-w-6xl mx-auto">
+    <section id="home" className="pt-24 sm:pt-28 pb-8 px-4 sm:px-6 max-w-6xl mx-auto min-h-[100dvh] flex flex-col justify-center">
       {/* 1. Bento Hero Grid */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-5 items-stretch">
         
         {/* Card 1: Left Tall Profile Card (md:col-span-4) */}
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.55, ease: 'easeOut' }}
           className="relative md:col-span-4 rounded-[2rem] bg-white border border-black/[0.06] overflow-hidden flex flex-col shadow-sm"
         >
           {/* Top Pattern Section */}
@@ -77,9 +77,9 @@ export default function Hero() {
 
         {/* Card 2: Middle About Card (md:col-span-4) */}
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.05 }}
+          transition={{ duration: 0.55, ease: 'easeOut', delay: 0.08 }}
           className="md:col-span-4 rounded-[2rem] bg-white border border-black/[0.06] p-6 sm:p-8 flex flex-col justify-between shadow-sm"
         >
           <div>
@@ -116,9 +116,9 @@ export default function Hero() {
               href={personalDetails.leetcode}
               target="_blank"
               rel="noreferrer"
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.1 }}
+              transition={{ duration: 0.55, ease: 'easeOut', delay: 0.16 }}
               className="rounded-[2rem] bg-[#FF5533] text-white p-5 flex flex-col justify-between shadow-sm hover:scale-[1.02] transition-transform cursor-pointer group"
             >
               <div className="flex items-center justify-end">
@@ -155,9 +155,9 @@ export default function Hero() {
 
             {/* Card 4: Formal Resume Card */}
             <motion.div
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.15 }}
+              transition={{ duration: 0.55, ease: 'easeOut', delay: 0.24 }}
               className="rounded-[2rem] bg-white border border-black/[0.06] p-5 flex flex-col justify-between shadow-sm"
             >
               <div>
@@ -183,9 +183,9 @@ export default function Hero() {
 
           {/* Card 5: Core Technical Stack & Engineering Competencies (High-Utility Card) */}
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 0.2 }}
+            transition={{ duration: 0.55, ease: 'easeOut', delay: 0.32 }}
             className="rounded-[2rem] bg-white border border-black/[0.06] p-5 sm:p-6 shadow-sm flex flex-col justify-between flex-1"
           >
             {/* Header */}
@@ -285,10 +285,10 @@ export default function Hero() {
 
       {/* 2. Stats Strip (Matching Image 4) */}
       <motion.div
-        initial={{ opacity: 0, y: 15 }}
+        initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.3 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: 0.55, ease: 'easeOut' }}
         className="mt-6 sm:mt-8 rounded-[2rem] bg-white border border-black/[0.06] shadow-sm p-6 sm:p-8"
       >
         <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-neutral-200/80">

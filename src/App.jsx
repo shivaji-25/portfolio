@@ -9,6 +9,7 @@ import Skills from './components/Skills';
 import Experience from './components/Experience';
 import Certifications from './components/Certifications';
 import Contact from './components/Contact';
+import BackToTop from './components/BackToTop';
 
 export default function App() {
   useEffect(() => {
@@ -17,7 +18,7 @@ export default function App() {
   }, []);
 
   return (
-    <div data-theme="light" className="theme-app relative min-h-screen overflow-x-clip antialiased bg-[#F2F2F5] text-neutral-900 selection:bg-neutral-900 selection:text-white">
+    <div data-theme="light" className="theme-app relative min-h-[100dvh] overflow-x-hidden antialiased bg-[#F2F2F5] text-neutral-900 selection:bg-neutral-900 selection:text-white">
       <a href="#main-content" className="skip-link">Skip to content</a>
       <AmbientBackground />
       <ScrollProgress />
@@ -32,6 +33,8 @@ export default function App() {
         <Certifications />
         <Contact />
       </main>
+
+      <BackToTop />
     </div>
   );
 }

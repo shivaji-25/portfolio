@@ -81,10 +81,10 @@ export default function Projects() {
           return (
             <motion.div
               key={project.id}
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.25, delay: index * 0.05 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.55, ease: 'easeOut', delay: index * 0.08 }}
               className="rounded-2xl sm:rounded-3xl bg-white border border-black/[0.06] overflow-hidden shadow-sm hover:shadow-md transition-shadow"
             >
               {/* Main Clickable Row */}

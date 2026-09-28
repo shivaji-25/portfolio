@@ -21,10 +21,10 @@ export default function About() {
         
         {/* Left Bento Card: Bio & Academic Info (md:col-span-7) */}
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.25 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.55, ease: 'easeOut' }}
           className="md:col-span-7 rounded-2xl sm:rounded-3xl bg-white border border-black/[0.06] p-6 sm:p-8 shadow-sm flex flex-col justify-between"
         >
           <div>
@@ -56,10 +56,10 @@ export default function About() {
 
         {/* Right Bento Card: LeetCode Analytics (md:col-span-5) */}
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.25, delay: 0.05 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.55, ease: 'easeOut', delay: 0.08 }}
           className="md:col-span-5 rounded-2xl sm:rounded-3xl bg-white border border-black/[0.06] p-6 sm:p-8 shadow-sm flex flex-col justify-between"
         >
           <div>
